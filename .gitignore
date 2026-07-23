@@ -1,3 +1,7 @@
+#Manual Ignore things
+cybersecurity_project_IDEA.txt
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
