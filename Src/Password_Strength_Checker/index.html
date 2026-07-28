@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">  
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="card">
         <div class="eyebrow"> Password Strength Checker </div>
-        <h1>Password Strength Checker</h1> 
+        <h1>Password Strength Checker</h1>
 
+        <div>
+            <input type="password" id="pwd" placeholder="Type a password..." autocomplete="off">
+            <button id="togglebtn" class="toggle"> SHOW </button>
+        </div>
         
 
+        <div class="meter" id="meter">
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+        </div>
+
+        <div class="lebel-row">
+            <span class="lebel id=span">Type a password</span>
+            <span class="score-num" id="scoreNum">0/5</span>
+        </div>
+
+        <div class="checklist">
+            <div class="chcek dot" id="c-len">At least 8 characters</div>
+            <div class="chcek dot" id="c-upper">Contains an one Uppercase letter. e.g, A X Y Z</div>
+            <div class="chcek dot" id="c-lower">Contains a lowercase letter. e.g, a z b x</div>
+            <div class="chcek dot" id="c-num">Contains a number.</div>
+            <div class="chcek dot" id="c-special">Contains a special character. e.g, ! # $ %</div>
+        </div>
+
+        <div class="tip" id="tip"></div>
+        
     </div>
 
 
 </body>
+
+<script source="script js"></script>
+
 </html>
