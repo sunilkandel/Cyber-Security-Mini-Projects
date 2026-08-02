@@ -64,14 +64,18 @@ if __name__ == "__main__":
         for tips in feedback:
             print(tips)
 
-        if score <5:
+        if score <3:
             print("----------------------------")
             print(" Still Weak! Try Again !!")
             print("----------------------------")
 
+        elif (score <5) & (score >= 3):
+            print("------------------------------------")
+            print(" Strong but not enough! Try Again !!")
+            print("------------------------------------")            
         
         else:
             print("--------------------------------------------")
-            print(" Your password is strong enough. Very good")
+            print(" Your password is strong enough.")
             print("--------------------------------------------")
             break
