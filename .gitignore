@@ -1,6 +1,7 @@
 #Manual Ignore things
 cybersecurity_project_IDEA.txt
-
+*.enc
+*.dec
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
