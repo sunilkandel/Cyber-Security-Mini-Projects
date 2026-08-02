@@ -27,7 +27,7 @@ def encrypt_file(file, key):
     encrypted_data = fernet.encrypt(original_data)
     
     # 4. Write the result to a new file (decide the naming convention yourself)
-    new_file_name = file.replace(".txt", "_encrypted.enc")
+    new_file_name = file + "_encrypted.enc"
     with open(new_file_name, "wb") as encrypted_file:
         encrypted_file.write(encrypted_data)
 
@@ -45,8 +45,8 @@ def decrypt_file(file, key):
     #Decrypt the encrypted data
     decrypted_data = fernet.decrypt(encrypted_data)
 
-    # Remove .enc from the original file and add '_decrypted.txt' as an extention
-    original_file_name = file.replace("_encrypted.enc", "_decrypted.dnc")
+    # Remove _encrypted.enc from the original file and add '_decrypted.dec' as an extention
+    original_file_name = file.replace("_encrypted.enc", "_decrypted.dec")
 
     # Save decrypted data to the file
     with open(original_file_name, "wb") as decrypted_file:
@@ -71,10 +71,11 @@ if __name__ == "__main__":
         key = load_key()
         encrypt_file(file,key)
 
-    if (action == "genkey") | (action == "D"):
+    elif (action == "decrypt") | (action == "D"):
         file = sys.argv[2]
         key = load_key()
         decrypt_file(file, key)
 
-
+    else:
+        print("Please! Give proper inputs and command.")
     
