@@ -1,46 +1,50 @@
-*****************************************************************************************
-******************************    G U I D E    ******************************************
+# File Encryption Tool
 
-This program contains the ability of reading file and perform given tasks like encryption and decryption.
+A command-line program that reads a file and performs encryption or decryption using the `cryptography` library's Fernet symmetric encryption.
 
-# Information
-- Original data will be in *.txt format only
-- New generate key will be saved in "secret.key" (If we try to create the new key again then new key will replace the old key)
-- Encrypted file will be saved in "*_encrypted.enc" 
-- Decrypted file wiil be saved in "*_decrypted.dnc""
-- To run this program: you have to use the terminal with the argument
+## Information
 
+- Any file type can be encrypted — the program reads and writes in binary mode, so it isn't limited to `.txt`
+- Generating a new key overwrites the old one in `secret.key` — any files encrypted with the old key can no longer be decrypted
+- Encrypted files are saved with a `.enc` extension, replacing the original extension (e.g. `file.txt` → `file.enc`, `photo.jpg` → `photo.enc`)
+- Decrypted files are saved with a `.dec` extension (e.g. `file.enc` → `file.dec`)
+- `.enc` and `.dec` files are excluded via `.gitignore` — every user generates their own from their own input files and key
+- Run the program from the terminal, passing an action and (where needed) a filename as arguments
 
+## Execution
 
+### 1. Generate a key (do this first, only once)
 
+You can regenerate the key at any time, but doing so overwrites `secret.key`. The same key must be used for both encryption and decryption of a given file.
 
-*****************************  E X E C U T I O N   ****************************************
+```bash
+python main.py G          # short form
+python main.py genkey     # long form
+```
 
-#    First and most important Step of this program. You only have to do it once, you can create new key too but the same key will need to  perform task (encryption/decryption).
+### 2. Encrypt a file
 
-python main.py G 				# To generate the key, you can create it as much as you want; it will replace the old key and store in secret.key file
-python main.py genkey   			# Same but lengthy 
+Works with any file type.
 
+```bash
+python main.py E file.txt        # short form
+python main.py encrypt file.txt  # long form
+```
 
-#    For encryption of original file (Only .txt files are allowed in this program as a original file)
+This creates `file.enc`.
 
-python main.py E file.txt			# Encrypt the *.txt file and save the encrypted data in *_encrypted.enc file
-python main.py encrypt file.txt 		#Same but full word encrypt
+### 3. Decrypt a file
 
+```bash
+python main.py D file.enc        # short form
+python main.py decrypt file.enc  # long form
+```
 
-#    For decryption of encrypted file (_encrypted.enc)
+This creates `file.dec`, containing the same binary data as the original input file.
 
-python main.py D file_encrypted.enc 		# Decrypt the *_encrypted.enc file and save the decrypted data in *_decrypted.dnc (The data will be same as original file "*.txt" but since the file decrypted we have to name it like this)
-python main.py decrypt file_encrypted.enc
+## Limitations
 
-
-
-
-
-
-
-********************************   L I M I T A T I O N   ************************************** 
-- Original file must be in .txt format
-- Same key will be used to decrypt the encrypted file. If you create new key then we can create new encrypted data and decrypt that but for old encrypted data; we cannot decrypt because the key is new.
-- No program to encrypt the decrypted data since the decrypted data has different extension and only .txt file can be encrypted.
-- You can't change the encrypted data; it will cause the error while you decrypt
+- Decryption requires the exact key used for encryption — if the key is regenerated, previously encrypted files can no longer be decrypted
+- The decrypted output always carries a `.dec` extension regardless of the original file type — you'll need to rename it manually to restore the correct extension (e.g. back to `.jpg` or `.txt`) if you want to open it normally
+- Modifying an encrypted file in any way will cause decryption to fail
+- No error handling yet for missing files, missing keys, or missing command-line arguments — the program will crash with a raw Python traceback in these cases
