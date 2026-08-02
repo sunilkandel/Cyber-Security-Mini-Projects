@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import os
 
 
 def generate_key(keypath="secret.key"):
@@ -27,7 +28,10 @@ def encrypt_file(file, key):
     encrypted_data = fernet.encrypt(original_data)
     
     # 4. Write the result to a new file (decide the naming convention yourself)
-    new_file_name = file + "_encrypted.enc"
+    base, ext = os.path.splitext(file)
+    new_file_name = base + ".enc"
+
+    
     with open(new_file_name, "wb") as encrypted_file:
         encrypted_file.write(encrypted_data)
 
@@ -46,10 +50,11 @@ def decrypt_file(file, key):
     decrypted_data = fernet.decrypt(encrypted_data)
 
     # Remove _encrypted.enc from the original file and add '_decrypted.dec' as an extention
-    original_file_name = file.replace("_encrypted.enc", "_decrypted.dec")
+    base, ext = os.path.splitext(file)
+    new_file_name = base + ".dec"
 
     # Save decrypted data to the file
-    with open(original_file_name, "wb") as decrypted_file:
+    with open(new_file_name, "wb") as decrypted_file:
         decrypted_file.write(decrypted_data)
 
 
