@@ -21,7 +21,7 @@ if __name__ == "__main__":
     mode = input ("Encrypt or Decrypt? (e/d): ")
 
     if  mode.lower() == "e":
-        print("You made it.")
+        print("Result: ", caesar_encrypt(msg, shift))
 
     else:
-        print("You still made it?")
+        print("Result: ", caesar_decrypt(msg, shift))
