@@ -2,11 +2,22 @@
 def caesar_encrypt(text, shift):
     result = ""
     for char in text:
-        # TODO: handle uppercase letters
-        # TODO: handle lowercase letters
-        # TODO: handle non-alphabet characters (numbers, spaces, punctuation) — leave unchanged
-        pass
+
+        if char.isupper():
+            # TODO: handle uppercase letters
+            result += chr(ord(char) + shift - 65) % 25 + 65
+
+        elif char.islower():
+            # TODO: handle lowercase letters
+            result += chr((ord(char) + shift - 97) % 26 + 97)
+
+        else:
+            # TODO: handle non-alphabet characters (numbers, spaces, punctuation) — leave unchanged
+            result += char
+
     return result
+
+
 
 def caesar_decrypt(text, shift):
     # TODO: think about this — do you need new logic,
