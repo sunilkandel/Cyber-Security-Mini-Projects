@@ -5,7 +5,7 @@ def caesar_encrypt(text, shift):
 
         if char.isupper():
             # TODO: handle uppercase letters
-            result += chr((ord(char) + shift - ord("A")) % 25 + ord("A"))
+            result += chr((ord(char) + shift - ord("A")) % 26 + ord("A"))
 
         elif char.islower():
             # TODO: handle lowercase letters
@@ -32,8 +32,11 @@ if __name__ == "__main__":
     shift = int(input("Enter shift value : "))
     mode = input ("Encrypt or Decrypt? (e/d): ")
 
-    if  mode.lower() == "e":
+    if  mode.lower() == "e" or mode.lower() == "encrypt":
         print("Result: ", caesar_encrypt(msg, shift))
 
-    else:
+    elif mode.lower() == "d" or mode.lower() == "decrypt":
         print("Result: ", caesar_decrypt(msg, shift))
+
+    else:
+        print("Please enter valid mode  Encrypt or Decrypt")
