@@ -29,14 +29,25 @@ def caesar_decrypt(text, shift):
 
 if __name__ == "__main__":
     msg = input("Enter your message: ")
-    shift = int(input("Enter shift value : "))
-    mode = input ("Encrypt or Decrypt? (e/d): ")
 
-    if  mode.lower() == "e" or mode.lower() == "encrypt":
-        print("Result: ", caesar_encrypt(msg, shift))
+    while True:
+        try:
+            shift = int(input("Enter shift value : "))
+            break            
 
-    elif mode.lower() == "d" or mode.lower() == "decrypt":
-        print("Result: ", caesar_decrypt(msg, shift))
+        except ValueError as e:
+            print("Please enter valid numeric shift value!, ", e)
+        
+    while True:
+        mode = input ("Encrypt or Decrypt? (e/d): ")
 
-    else:
-        print("Please enter valid mode  Encrypt or Decrypt")
+        if  mode.lower() == "e" or mode.lower() == "encrypt":
+            print("Result: ", caesar_encrypt(msg, shift))
+            break
+
+        elif mode.lower() == "d" or mode.lower() == "decrypt":
+            print("Result: ", caesar_decrypt(msg, shift))
+            break
+
+        else:
+            print("Please enter valid mode  Encrypt or Decrypt")
