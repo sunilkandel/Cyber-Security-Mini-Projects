@@ -5,11 +5,11 @@ def caesar_encrypt(text, shift):
 
         if char.isupper():
             # TODO: handle uppercase letters
-            result += chr((ord(char) + shift - 65) % 25 + 65)
+            result += chr((ord(char) + shift - ord("A")) % 25 + ord("A"))
 
         elif char.islower():
             # TODO: handle lowercase letters
-            result += chr((ord(char) + shift - 97) % 26 + 97)
+            result += chr((ord(char) + shift - ord('a')) % 26 + ord("a"))
 
         else:
             # TODO: handle non-alphabet characters (numbers, spaces, punctuation) — leave unchanged
@@ -22,8 +22,23 @@ def caesar_encrypt(text, shift):
 def caesar_decrypt(text, shift):
     # TODO: think about this — do you need new logic,
     # or can you just call caesar_encrypt with a modified shift?
-    
-    pass
+    result = ""
+    for char in text:
+
+        if char.isupper():
+            # TODO: handle uppercase letters
+            result += chr((ord(char) + shift - 65) % 25 + 65)
+
+        elif char.islower():
+            # TODO: handle lowercase letters
+            result += chr((ord(char) + shift - 97) % 26 + 97)
+
+        else:
+            # TODO: handle non-alphabet characters (numbers, spaces, punctuation) — leave unchanged
+            result += char
+
+    return result
+
 
 
 
