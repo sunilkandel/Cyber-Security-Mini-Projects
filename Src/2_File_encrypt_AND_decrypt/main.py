@@ -68,15 +68,15 @@ if __name__ == "__main__":
     action = sys.argv[1]
     #file = sys.argv[2]
 
-    if (action == "genkey") | (action == "G"):
+    if (action == "genkey") or (action == "G"):
         generate_key()
 
-    elif (action == "encrypt") | (action == "E"):
+    elif (action == "encrypt") or (action == "E"):
         file = sys.argv[2]
         key = load_key()
         encrypt_file(file,key)
 
-    elif (action == "decrypt") | (action == "D"):
+    elif (action == "decrypt") or (action == "D"):
         file = sys.argv[2]
         key = load_key()
         decrypt_file(file, key)
