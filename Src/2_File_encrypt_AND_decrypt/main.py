@@ -60,27 +60,29 @@ def decrypt_file(file, key):
 
 if __name__ == "__main__":
     import sys
+    try:
+        if len(sys.argv) < 2:
+            print("Usage: python main.py [ genkey 'G'|encrypt 'E' |decrypt 'D' ] [Filename]")
+            sys.exit(1)
 
-    if len(sys.argv) < 2:
-        print("Usage: python main.py [ genkey 'G'|encrypt 'E' |decrypt 'D' ] [Filename]")
-        sys.exit(1)
+        action = sys.argv[1]
+        #file = sys.argv[2]
 
-    action = sys.argv[1]
-    #file = sys.argv[2]
+        if (action == "genkey") or (action == "G"):
+            generate_key()
 
-    if (action == "genkey") or (action == "G"):
-        generate_key()
+        elif (action == "encrypt") or (action == "E"):
+            file = sys.argv[2]
+            key = load_key()
+            encrypt_file(file,key)
 
-    elif (action == "encrypt") or (action == "E"):
-        file = sys.argv[2]
-        key = load_key()
-        encrypt_file(file,key)
+        elif (action == "decrypt") or (action == "D"):
+            file = sys.argv[2]
+            key = load_key()
+            decrypt_file(file, key)
 
-    elif (action == "decrypt") or (action == "D"):
-        file = sys.argv[2]
-        key = load_key()
-        decrypt_file(file, key)
+        else:
+            print("Please! Give proper inputs and command.")
 
-    else:
-        print("Please! Give proper inputs and command.")
-    
+    except IndexError as e:
+        print(f"Error: {e}. Check if you forgot ot give argument!\nUsage: python main.py [ genkey 'G'|encrypt 'E' |decrypt 'D' ] [Filename]" )    
