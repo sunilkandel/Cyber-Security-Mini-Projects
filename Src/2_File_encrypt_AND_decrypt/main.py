@@ -4,21 +4,24 @@ import sys
 
 
 def generate_key(keypath="secret.key"):
-    key = Fernet.generate_key()
-    with open (keypath, "wb") as f:
-        f.write(key)
+    try:    
+        key = Fernet.generate_key()
+        with open (keypath, "wb") as f:
+            f.write(key)
 
-    print(f"Key Saved to {keypath}")
+        print(f"Key Saved to {keypath}")
+
+    except OSError as e:
+        print("Error! Error! Error!  ",e)
 
 def load_key(keypath = "secret.key"):
     try:
         with open (keypath, 'rb') as f:
             return f.read()
-        
-    except FileNotFoundError as e:
+
+    except OSError as e:
         print("Error! Error! Error! ", e)
         sys.exit()
-
 
 
 def encrypt_file(file, key):
@@ -45,9 +48,6 @@ def encrypt_file(file, key):
 
         except ValueError as e:
             print("Error! Error! Error!   Invalid or currupted key file.\n", e)       
-
-
-        
 
     except FileNotFoundError as e:
         print("Error! Error! Error! ",e)
