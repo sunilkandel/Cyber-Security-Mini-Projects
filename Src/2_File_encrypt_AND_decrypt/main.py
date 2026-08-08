@@ -42,12 +42,19 @@ def decrypt_file(file, key):
 
     
     #Read the encrypted file in binary
-    with open(file, "rb") as encrypted_file:
-        encrypted_data = encrypted_file.read()
+    try:    
+        with open(file, "rb") as encrypted_file:
+            encrypted_data = encrypted_file.read()
+
+    except FileNotFoundError as e:
+        print("Error: ",e)
 
 
     #Decrypt the encrypted data
+   
     decrypted_data = fernet.decrypt(encrypted_data)
+
+
 
     # Remove _encrypted.enc from the original file and add '_decrypted.dec' as an extention
     base, ext = os.path.splitext(file)
@@ -56,6 +63,7 @@ def decrypt_file(file, key):
     # Save decrypted data to the file
     with open(new_file_name, "wb") as decrypted_file:
         decrypted_file.write(decrypted_data)
+
 
 
 if __name__ == "__main__":
@@ -79,7 +87,10 @@ if __name__ == "__main__":
         elif (action == "decrypt") or (action == "D"):
             file = sys.argv[2]
             key = load_key()
-            decrypt_file(file, key)
+            try:
+                decrypt_file(file, key)
+            except:
+                print("Please Use Right key to decrypt")
 
         else:
             print("Please! Give proper inputs and command.")
