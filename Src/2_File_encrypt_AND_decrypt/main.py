@@ -1,5 +1,6 @@
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 import os
+import sys
 
 
 def generate_key(keypath="secret.key"):
@@ -10,35 +11,50 @@ def generate_key(keypath="secret.key"):
     print(f"Key Saved to {keypath}")
 
 def load_key(keypath = "secret.key"):
-    with open (keypath, 'rb') as f:
-        return f.read()
+    try:
+        with open (keypath, 'rb') as f:
+            return f.read()
+        
+    except FileNotFoundError as e:
+        print("Error! Error! Error! ", e)
+        sys.exit()
 
 
 
 def encrypt_file(file, key):
     # TODO:
     # 1. Open and read the file in binary mode
-    with open (file, 'rb') as f:
-        original_data = f.read()
+    try:
+        with open (file, 'rb') as f:
+            original_data = f.read()
+        
 
-    # 2. Create a Fernet object using the key
-    fernet = Fernet(key)
+        try:
+        # 2. Create a Fernet object using the key
+            fernet = Fernet(key)
+            # 3. Call the method that encrypts data
+            encrypted_data = fernet.encrypt(original_data)
+            
+            # 4. Write the result to a new file (decide the naming convention yourself)
+            base, ext = os.path.splitext(file)
+            new_file_name = base + ".enc"
 
-    # 3. Call the method that encrypts data
-    encrypted_data = fernet.encrypt(original_data)
-    
-    # 4. Write the result to a new file (decide the naming convention yourself)
-    base, ext = os.path.splitext(file)
-    new_file_name = base + ".enc"
+            
+            with open(new_file_name, "wb") as encrypted_file:
+                encrypted_file.write(encrypted_data)
 
-    
-    with open(new_file_name, "wb") as encrypted_file:
-        encrypted_file.write(encrypted_data)
+        except ValueError as e:
+            print("Error! Error! Error!   Invalid or currupted key file.\n", e)       
 
+
+        
+
+    except FileNotFoundError as e:
+        print("Error! Error! Error! ",e)
 
 def decrypt_file(file, key):
     # TODO: same shape, reversed
-    fernet = Fernet(key)
+    
 
     
     #Read the encrypted file in binary
@@ -46,28 +62,35 @@ def decrypt_file(file, key):
         with open(file, "rb") as encrypted_file:
             encrypted_data = encrypted_file.read()
 
+
+        #Decrypt the encrypted data
+        try:
+            fernet = Fernet(key)
+            decrypted_data = fernet.decrypt(encrypted_data)
+            # Remove _encrypted.enc from the original file and add '_decrypted.dec' as an extention
+            base, ext = os.path.splitext(file)
+            new_file_name = base + ".dec"
+
+            # Save decrypted data to the file
+            with open(new_file_name, "wb") as decrypted_file:
+                decrypted_file.write(decrypted_data)       
+
+        except ValueError as e:
+                print("Error! Error! Error!   Invalid or currupted key file.\n", e)       
+
+        except InvalidToken as e:
+            print("Error! Error! Error!   Decryption failed — wrong key or corrupted file.", e)
+            
     except FileNotFoundError as e:
-        print("Error: ",e)
-
-
-    #Decrypt the encrypted data
-   
-    decrypted_data = fernet.decrypt(encrypted_data)
+        print("Error! Error! Error! ",e)
 
 
 
-    # Remove _encrypted.enc from the original file and add '_decrypted.dec' as an extention
-    base, ext = os.path.splitext(file)
-    new_file_name = base + ".dec"
-
-    # Save decrypted data to the file
-    with open(new_file_name, "wb") as decrypted_file:
-        decrypted_file.write(decrypted_data)
 
 
 
 if __name__ == "__main__":
-    import sys
+    
     try:
         if len(sys.argv) < 2:
             print("Usage: python main.py [ genkey 'G'|encrypt 'E' |decrypt 'D' ] [Filename]")
@@ -80,17 +103,13 @@ if __name__ == "__main__":
             generate_key()
 
         elif (action == "encrypt") or (action == "E"):
-            file = sys.argv[2]
             key = load_key()
-            encrypt_file(file,key)
+            encrypt_file(sys.argv[2],key)
 
         elif (action == "decrypt") or (action == "D"):
-            file = sys.argv[2]
             key = load_key()
-            try:
-                decrypt_file(file, key)
-            except:
-                print("Please Use Right key to decrypt")
+            decrypt_file(sys.argv[2], key)
+
 
         else:
             print("Please! Give proper inputs and command.")
