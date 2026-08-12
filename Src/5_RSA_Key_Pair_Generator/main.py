@@ -50,7 +50,13 @@ def save_public_key(public_key, path):
 
     TODO: call public_key.public_bytes(...) and write to `path` in 'wb' mode.
     """
-    pass
+    pem_bytes = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+
+    with open(path, 'wb') as f:
+        f.write(pem_bytes)
 
 
 def load_private_key(path, password=None):
