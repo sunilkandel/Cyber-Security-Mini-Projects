@@ -26,7 +26,19 @@ def save_private_key(private_key, path, password=None):
     private_key.private_bytes(encoding=..., format=..., encryption_algorithm=...)
     and write the resulting bytes to `path` in 'wb' mode.
     """
-    pass
+    if password:
+        encryption_algorithm = serialization.BestAvailableEncryption(password.encode())
+    else:
+        encryption_algorithm = serialization.NoEncryption()
+
+    pem_bytes = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=encryption_algorithm
+    )
+
+    with open(path, 'wb') as f:
+        f.write(pem_bytes)
 
 
 def save_public_key(public_key, path):
