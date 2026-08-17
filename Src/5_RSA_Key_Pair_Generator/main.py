@@ -67,7 +67,16 @@ def load_private_key(path, password=None):
     serialization.load_pem_private_key(data, password=password.encode() if password else None)
     Return the loaded private key object.
     """
-    pass
+    with open(path, 'rb') as f:
+        data = f.read()
+
+    private_key = serialization.load_pem_private_key(
+        data,
+        password=password.encode() if password else None
+    )
+
+    return private_key
+
 
 
 def load_public_key(path):
@@ -78,7 +87,12 @@ def load_public_key(path):
     serialization.load_pem_public_key(data)
     Return the loaded public key object.
     """
-    pass
+    with open(path, 'rb') as f:
+        data = f.read()
+
+    public_key = serialization.load_pem_public_key(data)
+
+    return public_key
 
 
 def get_key_details(private_key):
@@ -96,21 +110,47 @@ def get_key_details(private_key):
         "d": ...,
     }
     """
-    pass
+    numbers = private_key.private_numbers()
+
+    return {
+        "key_size": private_key.key_size,
+        "n": numbers.public_numbers.n,
+        "e": numbers.public_numbers.e,
+        "d": numbers.d,
+    }
+
 
 
 def main():
     """
-    TODO: wire it together —
-    1. Ask user for key size (e.g. 1024/2048/4096)
-    2. Ask user for an optional password
-    3. Call generate_keypair(key_size)
-    4. Call save_private_key(...) and save_public_key(...)
-    5. Call get_key_details(...) and print/display it
-    This is also where you'll later swap in the Tkinter GUI instead of
-    plain input()/print() calls.
+    Wire it together: generate a keypair, save it, and show its details.
     """
-    pass
+    
+    # 1. Ask user for key size
+    key_size_input = input("Key size (1024/2048/4096) [default 2048]: ").strip()
+    key_size = int(key_size_input) if key_size_input else 2048
+
+    # 2. Ask user for an optional password
+    password = input("Password to encrypt private key (leave blank for none): ").strip()
+    password = password if password else None
+
+    # 3. Generate the keypair
+    private_key, public_key = generate_keypair(key_size)
+
+    # 4. Save both keys to disk
+    save_private_key(private_key, "private_key.pem", password=password)
+    save_public_key(public_key, "public_key.pem")
+
+    # 5. Extract and display details
+    details = get_key_details(private_key)
+    print("\n--- Key Details ---")
+    print(f"Key size: {details['key_size']} bits")
+    print(f"n (modulus): {details['n']}")
+    print(f"e (public exponent): {details['e']}")
+    print(f"d (private exponent): {details['d']}")
+    print(f"\nSaved to private_key.pem and public_key.pem")
+
+
 
 
 if __name__ == "__main__":
