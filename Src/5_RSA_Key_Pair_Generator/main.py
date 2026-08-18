@@ -1,6 +1,6 @@
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
-
+import sys
 
 def generate_keypair(key_size=2048):
     """
@@ -127,8 +127,13 @@ def main():
     """
     
     # 1. Ask user for key size
-    key_size_input = input("Key size (1024/2048/4096) [default 2048]: ").strip()
-    key_size = int(key_size_input) if key_size_input else 2048
+    try:
+        key_size_input = input("Key size (1024/2048/4096) [default 2048]: ").strip()
+        key_size = int(key_size_input) if key_size_input else 2048
+
+    except ValueError as e:
+        print("Please enter the numeric value. \nError: ", e)
+        sys.exit()
 
     # 2. Ask user for an optional password
     password = input("Password to encrypt private key (leave blank for none): ").strip()
