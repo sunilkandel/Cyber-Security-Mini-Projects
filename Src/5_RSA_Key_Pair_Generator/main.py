@@ -130,7 +130,7 @@ def main():
     try:
         key_size_input = input("Key size (1024/2048/4096) [default 2048]: ").strip()
         key_size = int(key_size_input) if key_size_input else 2048
-    # 2. Ask user for an optional password
+        # 2. Ask user for an optional password
         password = input("Password to encrypt private key (leave blank for none): ").strip()
         password = password if password else None
 
@@ -143,7 +143,7 @@ def main():
 
 
     except ValueError as e:
-        print("Please enter the numeric value. \nError: ", e)
+        print("\nError: ", e)
         sys.exit()
 
 
