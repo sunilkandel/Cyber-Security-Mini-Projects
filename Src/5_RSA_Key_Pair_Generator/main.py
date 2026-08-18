@@ -37,7 +37,7 @@ def save_private_key(private_key, path, password=None):
         encryption_algorithm=encryption_algorithm
     )
 
-    with open(path, 'wb') as f:
+    with open("Src/5_RSA_Key_Pair_Generator/private_key.pem", 'wb') as f:
         f.write(pem_bytes)
 
 
@@ -55,7 +55,7 @@ def save_public_key(public_key, path):
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
 
-    with open(path, 'wb') as f:
+    with open("Src/5_RSA_Key_Pair_Generator/public_key.pem", 'wb') as f:
         f.write(pem_bytes)
 
 
@@ -130,21 +130,22 @@ def main():
     try:
         key_size_input = input("Key size (1024/2048/4096) [default 2048]: ").strip()
         key_size = int(key_size_input) if key_size_input else 2048
+    # 2. Ask user for an optional password
+        password = input("Password to encrypt private key (leave blank for none): ").strip()
+        password = password if password else None
+
+        # 3. Generate the keypair
+        private_key, public_key = generate_keypair(key_size)
+
+        # 4. Save both keys to disk
+        save_private_key(private_key, "private_key.pem", password=password)
+        save_public_key(public_key, "public_key.pem")
+
 
     except ValueError as e:
         print("Please enter the numeric value. \nError: ", e)
         sys.exit()
 
-    # 2. Ask user for an optional password
-    password = input("Password to encrypt private key (leave blank for none): ").strip()
-    password = password if password else None
-
-    # 3. Generate the keypair
-    private_key, public_key = generate_keypair(key_size)
-
-    # 4. Save both keys to disk
-    save_private_key(private_key, "private_key.pem", password=password)
-    save_public_key(public_key, "public_key.pem")
 
     # 5. Extract and display details
     details = get_key_details(private_key)
