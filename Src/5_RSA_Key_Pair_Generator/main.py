@@ -353,4 +353,4 @@ if __name__ == "__main__":
     app.mainloop()
 
 
-    print("No woay")
+    print("There is a way. Btw")
